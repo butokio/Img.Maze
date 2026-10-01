@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Img.Maze</title>
+  <meta name="description" content="Img.Maze — a cross-canon bestiary maze. In-progress prototype.">
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/main.js" defer></script>
+</head>
+
+<!-- LANDING · z-index cluster / chaos
+     A dense pile with no focal point and no menu. Two of the masses are doors (Reaper → Water, Krayt → Desert).
+     Interactions: hover lifts a piece to the front · drag any piece · press any letter to shuffle the pile ·
+     the two doors twitch if you leave them alone · click a door to go through. -->
+<body class="page-landing" data-page="landing">
+  <main class="pile" id="pile">
+
+    <!-- backing paper + surface scraps (lowest layers) -->
+    <div class="piece p-paper-a" aria-hidden="true"><img class="cut-1" src="img/textures/paper.jpg" alt=""></div>
+    <div class="piece p-paper-b" aria-hidden="true"><img class="cut-5" src="img/textures/paper.jpg" alt=""></div>
+    <div class="piece p-kelp"    aria-hidden="true"><img class="cut-2" src="img/textures/kelp.jpg"  alt=""></div>
+    <div class="piece p-sand"    aria-hidden="true"><img class="cut-5" src="img/textures/sand.jpg"  alt=""></div>
+    <div class="piece p-ice"     aria-hidden="true"><img class="cut-3" src="img/textures/ice.jpg"   alt=""></div>
+    <div class="piece p-bark"    aria-hidden="true"><img class="cut-6" src="img/textures/bark.jpg"  alt=""></div>
+    <div class="piece p-sand-b"  aria-hidden="true"><img class="cut-7" src="img/textures/sand.jpg"  alt=""></div>
+    <div class="piece p-ice-b"   aria-hidden="true"><img class="cut-4" src="img/textures/ice.jpg"   alt=""></div>
+    <div class="piece p-kelp-b"  aria-hidden="true"><img class="cut-8" src="img/textures/kelp.jpg"  alt=""></div>
+
+    <!-- the two hidden doors -->
+    <a class="piece door p-reaper" href="water.html" data-door draggable="false" aria-label="Water">
+      <img class="cut-1" src="img/creatures/reaper.jpg" alt="Reaper Leviathan (Subnautica): a pale-eyed deep-sea predator with long grasping arms">
+    </a>
+    <a class="piece door p-krayt" href="desert.html" data-door draggable="false" aria-label="Desert">
+      <img class="cut-4" src="img/creatures/krayt.jpg" alt="Krayt dragon (Star Wars): a colossal sand dragon rearing over tiny robed figures">
+    </a>
+
+    <!-- everyone else: canons that never meet, sharing a pile -->
+    <div class="piece p-flicker"><img class="cut-3" src="img/gifs/flicker.gif" alt="A rapid flicker through every creature in the maze"></div>
+    <div class="piece p-watcher"><img class="cut-7" src="img/creatures/watcher.jpg" alt="The Watcher in the Water (Tolkien): a mass of tentacles rising from a dark lake"></div>
+    <div class="piece p-tauntaun"><img class="cut-6" src="img/creatures/tauntaun.jpg" alt="Tauntaun (Star Wars): a frosted snow-lizard carrying a rider"></div>
+    <div class="piece p-sando"><img src="img/creatures/sando.png" alt="Sando aqua monster (Star Wars): a vast whale-like swamp creature, drawn as a field-guide plate"></div>
+    <div class="piece p-ravinak"><img class="cut-5" src="img/creatures/ravinak.jpg" alt="Ravinak (Star Trek): an armoured ice predator surfacing from shadow"></div>
+    <div class="piece p-wampa"><img class="cut-2" src="img/creatures/wampa.jpg" alt="Wampa (Star Wars): a white snow-beast in an ice cave"></div>
+    <div class="piece p-lematya"><img src="img/creatures/lematya.png" alt="Le-matya (Star Trek): a green and yellow desert predator, drawn in pencil crayon"></div>
+    <div class="piece p-ungoliant"><img class="cut-8" src="img/creatures/ungoliant.jpg" alt="Ungoliant (Tolkien): a giant spider beneath the Two Trees"></div>
+    <div class="piece p-ent"><img src="img/creatures/ent.png" alt="Treebeard, an Ent (Tolkien), shown on a trading card"></div>
+    <div class="piece p-raptor"><img src="img/creatures/raptor.png" alt="Velociraptor: a feathered pack-hunter with a blue crest"></div>
+
+    <!-- type-as-texture: cut-up lettering, decorative only -->
+    <div class="piece p-type-a" aria-hidden="true"><span class="scrap"><b>Im</b></span></div>
+    <div class="piece p-type-b" aria-hidden="true"><span class="scrap scrap--cream"><b>g.</b></span></div>
+    <div class="piece p-type-c" aria-hidden="true"><span class="scrap"><b>Ma</b></span></div>
+    <div class="piece p-type-d" aria-hidden="true"><span class="scrap scrap--cream"><b>ze</b></span></div>
+
+  </main>
+</body>
+</html>

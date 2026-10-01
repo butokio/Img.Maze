@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Img.Maze — water</title>
+  <meta name="description" content="Img.Maze — the water biome. In-progress prototype.">
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/main.js" defer></script>
+</head>
+
+<!-- WATER · fixed + sticky
+     The sea is position:fixed and never moves; it darkens as you scroll (--depth). The dominant creature is hidden:
+     only a murky presence and ripples give it away. Touch the corrupted patch and it surfaces.
+     Interactions: scroll to descend · hover/focus/tap the corrupted lens to reveal the anchor ·
+     top-right kelp patch → external wiki · sticky Wampa → Frozen · GIF at the bottom → Desert. -->
+<body class="page-water" data-page="water">
+
+  <!-- FIXED background -->
+  <div class="sea" aria-hidden="true">
+    <div class="sea__rays"></div>
+    <div class="sea__caustics"></div>
+    <div class="sea__caustics sea__caustics--b"></div>
+    <div class="sea__snow"></div>
+  </div>
+
+  <!-- FIXED interactive layer: the hidden anchor, its lens, the wiki texture -->
+  <div class="reef" id="reef">
+    <div class="lair">
+      <!-- the lens comes BEFORE the anchor so CSS can reveal the anchor with a sibling selector -->
+      <button class="lens" type="button" aria-pressed="false" aria-label="A patch of corrupted signal">
+        <img src="img/creatures/reaper-glitch.jpg" alt="">
+      </button>
+      <img class="anchor" src="img/creatures/reaper.jpg" alt="Reaper Leviathan (Subnautica): a pale-eyed deep-sea predator with long grasping arms">
+      <span class="disturbance" aria-hidden="true"></span>
+    </div>
+
+    <a class="wiki out" href="https://subnautica.fandom.com/wiki/Reaper_Leviathan" target="_blank" rel="noopener noreferrer"
+       aria-label="Subnautica wiki: Reaper Leviathan (opens in a new tab)">
+      <img src="img/textures/kelp.jpg" alt="">
+    </a>
+  </div>
+
+  <!-- the dive: a long page that scrolls over the fixed sea -->
+  <main class="dive" id="dive">
+    <div class="dive__surface" aria-hidden="true"></div>
+
+    <!-- STICKY lane: one screen tall, pinned for the whole dive -->
+    <div class="dive__lane">
+      <a class="sticky-link door" href="frozen.html" data-door aria-label="Frozen">
+        <img class="sticky-link__main cut-2" src="img/creatures/wampa.jpg" alt="Wampa (Star Wars): a white snow-beast in an ice cave, a long way from the cold">
+        <span class="sticky-link__detail" aria-hidden="true"><img src="img/creatures/wampa.jpg" alt=""></span>
+      </a>
+    </div>
+
+    <!-- creatures that scroll past -->
+    <img class="drifter drifter--watcher cut-7" src="img/creatures/watcher.jpg" alt="The Watcher in the Water (Tolkien): a mass of tentacles rising from a dark lake">
+    <img class="drifter drifter--sando" src="img/creatures/sando.png" alt="Sando aqua monster (Star Wars): a vast whale-like swamp creature, drawn as a field-guide plate">
+
+    <!-- the GIF is a door too -->
+    <a class="gif-link door" href="desert.html" data-door aria-label="Desert">
+      <img src="img/gifs/lematya-swim.gif" alt="Le-matya (Star Trek), a desert predator, wading through dark water">
+    </a>
+  </main>
+
+</body>
+</html>

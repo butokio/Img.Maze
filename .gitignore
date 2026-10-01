@@ -1,0 +1,9 @@
+# Third-party artwork extracted from the ideation PDF, and the files derived from it (GIFs, glitch patch).
+# This repository is public, so they are NOT committed. They ship in the submission ZIP; to put them in git,
+# review the credits in README.md first, then:  git add -f img/creatures img/gifs
+# To rebuild them from the PDF:  tools/build-creatures.sh <pdf> && tools/build-gifs.sh
+img/creatures/
+img/gifs/
+
+node_modules/
+.DS_Store

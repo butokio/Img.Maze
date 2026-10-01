@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Img.Maze — frozen</title>
+  <meta name="description" content="Img.Maze — the frozen biome. In-progress prototype.">
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/main.js" defer></script>
+</head>
+
+<!-- FROZEN · stillness + thaw
+     No scroll. A canvas of frost closes over the page the longer you hold still, and moving the pointer clears it.
+     Three hidden links: the highlighted circle (a Velociraptor that does not belong → Forest),
+     an unrelated image (→ back to the start), and the starred circle (→ external wiki).
+     The sparkles and the dashed ring sit above the frost, so the exits are a promise even when the ice has closed. -->
+<body class="page-frozen" data-page="frozen">
+  <main class="ice" id="ice">
+
+    <div class="floe f-slab" aria-hidden="true"><img src="img/textures/ice.jpg" alt=""></div>
+    <div class="floe f-wampa"><img class="cut-1" src="img/creatures/wampa.jpg" alt="Wampa (Star Wars): a white snow-beast in an ice cave"></div>
+    <div class="floe f-tauntaun"><img class="cut-3" src="img/creatures/tauntaun.jpg" alt="Tauntaun (Star Wars): a frosted snow-lizard carrying a rider"></div>
+    <div class="floe f-ravinak"><img class="cut-4" src="img/creatures/ravinak.jpg" alt="Ravinak (Star Trek): an armoured ice predator surfacing from shadow"></div>
+
+    <!-- the highlighted circle: a misplaced creature that is a door -->
+    <a class="floe f-porthole door" href="forest.html" data-door aria-label="Forest">
+      <img src="img/creatures/raptor.png" alt="Velociraptor: a feathered pack-hunter with a blue crest, a long way from its forest">
+    </a>
+
+    <!-- the starred element: a hidden exit -->
+    <a class="floe f-star out" href="https://starwars.fandom.com/wiki/Wampa" target="_blank" rel="noopener noreferrer"
+       aria-label="Wookieepedia: Wampa (opens in a new tab)">
+      <img src="img/textures/sand.jpg" alt="">
+    </a>
+
+    <!-- an unrelated image: unexpected result from an action -->
+    <a class="floe f-scrap scrap door" href="index.html" data-door aria-label="Back to the start"><b>M</b></a>
+
+    <!-- the frost (painted by js/main.js) and the things that glow through it -->
+    <canvas class="frost" aria-hidden="true"></canvas>
+    <i class="ring" aria-hidden="true"></i>
+    <i class="glint glint--a" aria-hidden="true"></i>
+    <i class="glint glint--b" aria-hidden="true"></i>
+    <i class="glint glint--c" aria-hidden="true"></i>
+
+  </main>
+</body>
+</html>
