@@ -1,68 +1,51 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Img.Maze — water</title>
-  <meta name="description" content="Img.Maze — the water biome. In-progress prototype.">
-  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/style.css">
-  <script src="js/main.js" defer></script>
-</head>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Img.Maze - water</title>
+        <link href="stylesheets/mystyles.css" rel="stylesheet" type="text/css"/>
+        <link rel="icon" href="images/favicon.svg" type="image/svg+xml" />
+    </head>
 
-<!-- WATER · fixed + sticky
-     The sea is position:fixed and never moves; it darkens as you scroll (--depth). The dominant creature is hidden:
-     only a murky presence and ripples give it away. Touch the corrupted patch and it surfaces.
-     Interactions: scroll to descend · hover/focus/tap the corrupted lens to reveal the anchor ·
-     top-right kelp patch → external wiki · sticky Wampa → Frozen · GIF at the bottom → Desert. -->
-<body class="page-water" data-page="water">
+    <!-- WATER PAGE: fixed + sticky.
+         The light and the hidden creature are position:fixed, so they never move. The page behind them scrolls and gets darker.
+         The biggest creature is hidden: only murk and ripples give it away. Point at the corrupted patch and it surfaces.
+         Links: the kelp (outside wiki), the sticky Wampa (a snow creature lost in the sea) and the GIF at the very bottom (to Desert). -->
+    <body id="water">
 
-  <!-- FIXED background -->
-  <div class="sea" aria-hidden="true">
-    <div class="sea__rays"></div>
-    <div class="sea__caustics"></div>
-    <div class="sea__caustics sea__caustics--b"></div>
-    <div class="sea__snow"></div>
-  </div>
+        <!-- FIXED LAYERS -->
+        <div id="lightWebs"></div>
+        <div id="snow"></div>
 
-  <!-- FIXED interactive layer: the hidden anchor, its lens, the wiki texture -->
-  <div class="reef" id="reef">
-    <div class="lair">
-      <!-- the lens comes BEFORE the anchor so CSS can reveal the anchor with a sibling selector -->
-      <button class="lens" type="button" aria-pressed="false" aria-label="A patch of corrupted signal">
-        <img src="img/creatures/reaper-glitch.jpg" alt="">
-      </button>
-      <img class="anchor" src="img/creatures/reaper.jpg" alt="Reaper Leviathan (Subnautica): a pale-eyed deep-sea predator with long grasping arms">
-      <span class="disturbance" aria-hidden="true"></span>
-    </div>
+        <div id="reef">
+            <div id="lair">
+                <!-- #lens comes BEFORE #anchorBox: that order is what lets the CSS reveal the anchor (see "REVEAL" in mystyles.css) -->
+                <div id="lens" tabindex="0"><img src="images/creatures/reaper-glitch.jpg" alt="A patch of corrupted signal" /></div>
+                <div id="anchorBox" class="cutA"><img id="anchor" src="images/creatures/reaper-leviathan.jpg" alt="Reaper Leviathan (Subnautica): a pale-eyed deep-sea predator with long grasping arms" /></div>
+                <div id="ripples"></div>
+            </div>
 
-    <a class="wiki out" href="https://subnautica.fandom.com/wiki/Reaper_Leviathan" target="_blank" rel="noopener noreferrer"
-       aria-label="Subnautica wiki: Reaper Leviathan (opens in a new tab)">
-      <img src="img/textures/kelp.jpg" alt="">
-    </a>
-  </div>
+            <!-- top-right patch of kelp: a link to an outside wiki -->
+            <a id="wiki" href="https://subnautica.fandom.com/wiki/Reaper_Leviathan" target="_blank" rel="noopener"><img src="images/textures/kelp.jpg" alt="Kelp: a link to the Subnautica wiki page for the Reaper Leviathan (opens in a new tab)" /></a>
+        </div>
 
-  <!-- the dive: a long page that scrolls over the fixed sea -->
-  <main class="dive" id="dive">
-    <div class="dive__surface" aria-hidden="true"></div>
+        <!-- THE DIVE: a long page that scrolls over the fixed layers -->
+        <main>
+            <div id="surface"></div>
 
-    <!-- STICKY lane: one screen tall, pinned for the whole dive -->
-    <div class="dive__lane">
-      <a class="sticky-link door" href="frozen.html" data-door aria-label="Frozen">
-        <img class="sticky-link__main cut-2" src="img/creatures/wampa.jpg" alt="Wampa (Star Wars): a white snow-beast in an ice cave, a long way from the cold">
-        <span class="sticky-link__detail" aria-hidden="true"><img src="img/creatures/wampa.jpg" alt=""></span>
-      </a>
-    </div>
+            <!-- STICKY: the Wampa stays put while you scroll.
+                 TEMP: this will go to frozen.html once that page is built. For now it goes to the start so nothing is a dead end. -->
+            <a id="stickyWampa" href="index.html" target="_self"><img class="cutB" src="images/creatures/wampa.jpg" alt="Wampa (Star Wars): a white snow-beast in an ice cave, a long way from the cold" /></a>
 
-    <!-- creatures that scroll past -->
-    <img class="drifter drifter--watcher cut-7" src="img/creatures/watcher.jpg" alt="The Watcher in the Water (Tolkien): a mass of tentacles rising from a dark lake">
-    <img class="drifter drifter--sando" src="img/creatures/sando.png" alt="Sando aqua monster (Star Wars): a vast whale-like swamp creature, drawn as a field-guide plate">
+            <!-- creatures that slide past as you scroll -->
+            <img id="watcherWater" class="cutG" src="images/creatures/watcher-in-the-water.jpg" alt="The Watcher in the Water (Tolkien): a mass of tentacles rising from a dark lake" />
+            <img id="sandoWater" src="images/creatures/sando-aqua-monster.png" alt="Sando aqua monster (Star Wars): a vast whale-like swamp creature, drawn as a field-guide plate" />
 
-    <!-- the GIF is a door too -->
-    <a class="gif-link door" href="desert.html" data-door aria-label="Desert">
-      <img src="img/gifs/lematya-swim.gif" alt="Le-matya (Star Trek), a desert predator, wading through dark water">
-    </a>
-  </main>
+            <!-- the GIF at the very bottom is a door to Desert -->
+            <a id="swimMatya" href="desert.html" target="_self"><img src="images/gifs/le-matya-swim.gif" alt="Le-matya (Star Trek), a desert predator, wading through dark water" /></a>
+        </main>
 
-</body>
+        <div id="grain"></div>
+    </body>
 </html>

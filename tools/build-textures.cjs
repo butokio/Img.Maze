@@ -5,14 +5,14 @@
  *   npm i playwright   (once, anywhere on your machine)
  *   node tools/build-textures.cjs
  *
- * Output goes to img/textures/. JPEGs are produced through ImageMagick (`convert`).
+ * Output goes to images/textures/. JPEGs are produced through ImageMagick (`convert`).
  */
 const { chromium } = require('playwright');
 const { execFileSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
-const OUT = path.resolve(__dirname, '../img/textures');
+const OUT = path.resolve(__dirname, '../images/textures');
 fs.mkdirSync(OUT, { recursive: true });
 
 /* helper: colour matrix that paints a flat colour and takes alpha from the red noise channel: a*R + b */
@@ -48,6 +48,23 @@ const TEXTURES = [
       <rect width="900" height="900" filter="url(#mot)" opacity=".75"/>
       <rect width="900" height="900" filter="url(#fib)" opacity=".5"/>
       <rect width="900" height="900" filter="url(#spk)" opacity=".4"/>
+    </svg>` },
+
+
+  /* --- brown kraft paper: the second backing sheet on the Landing pile --- */
+  { name: 'kraft', w: 900, h: 900, ext: 'jpg', svg: `
+    <svg xmlns="http://www.w3.org/2000/svg" width="900" height="900">
+      <filter id="mot" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.006" numOctaves="4" seed="27"/>
+        <feColorMatrix type="matrix" values="${alphaFromR(0.35, 0.22, 0.1, 1.2, -0.42)}"/>
+      </filter>
+      <filter id="fib" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.01 0.5" numOctaves="3" seed="8"/>
+        <feColorMatrix type="matrix" values="${alphaFromR(0.25, 0.15, 0.07, 1.6, -0.72)}"/>
+      </filter>
+      <rect width="900" height="900" fill="#b89c74"/>
+      <rect width="900" height="900" filter="url(#mot)" opacity=".8"/>
+      <rect width="900" height="900" filter="url(#fib)" opacity=".6"/>
     </svg>` },
 
   /* --- rippled dune sand (lit height-map) --- */

@@ -1,59 +1,61 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Img.Maze — desert</title>
-  <meta name="description" content="Img.Maze — the desert biome. In-progress prototype.">
-  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/style.css">
-  <script src="js/main.js" defer></script>
-</head>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Img.Maze - desert</title>
+        <link href="stylesheets/mystyles.css" rel="stylesheet" type="text/css"/>
+        <link rel="icon" href="images/favicon.svg" type="image/svg+xml" />
+    </head>
 
-<!-- DESERT · absolute + scale
-     One vast anchor image (the Krayt dragon, position:absolute and far wider than the screen) and a lot of very small things.
-     Interactions: hover/tap any speck and it swells to full size · hover/click the GIF in the top left ·
-     arrow keys / 1–4 / any letter change the light · three textures are doors (ice → Frozen, bark → Forest,
-     engraving → external) · the spare sand texture also shifts the light · sticky creature top right grows on hover. -->
-<body class="page-desert" data-page="desert" data-time="noon">
-  <main class="dunes" id="dunes">
+    <!-- DESERT PAGE: absolute + scale.
+         One vast image (the Krayt dragon, far wider than the window) and a few very small things.
+         The sun is a button: click it and the desert goes to night (click again for day). The patch of sand does the same.
+         Hover the tiny Le-matya and it swells. Hover the still in the top left and it plays.
+         Three textures are links: the ice and the bark (TEMP, see below) and the hatched paper (an outside encyclopedia). -->
+    <body id="desert">
 
-    <div class="sky" aria-hidden="true"><i class="sun"></i><i class="sun sun--b"></i></div>
-    <div class="sand" aria-hidden="true"></div>
+        <!-- the hidden day / night switch. It must come BEFORE everything it changes (see "THE LIGHT SWITCH" in mystyles.css) -->
+        <input type="checkbox" id="night" aria-label="Day or night" />
+        <div id="sky"></div>
+        <div id="skyNight"></div>
 
-    <!-- ANCHOR / ABSOLUTE -->
-    <div class="colossus">
-      <img class="anchor" src="img/creatures/krayt.jpg" alt="Krayt dragon (Star Wars): a colossal sand dragon rearing over tiny robed figures">
+        <main id="dunes">
+            <div id="sand"><div id="sandTexture"></div></div>
+            <i id="sunB"></i>
 
-      <a class="tex tex--ice door" href="frozen.html" data-door aria-label="Frozen"><img src="img/textures/ice.jpg" alt=""></a>
-      <a class="tex tex--bark door" href="forest.html" data-door aria-label="Forest"><img src="img/textures/bark.jpg" alt=""></a>
-      <a class="tex tex--page out" href="https://en.wikipedia.org/wiki/Sandworm_(Dune)" target="_blank" rel="noopener noreferrer"
-         aria-label="Encyclopedia: Sandworm (Dune) (opens in a new tab)"><span class="tex__engraving"></span></a>
-      <button class="tex tex--spare" type="button" aria-label="A patch of sand that shifts the light"><img src="img/textures/sand.jpg" alt=""></button>
+            <!-- ANCHOR / ABSOLUTE -->
+            <div id="colossus">
+                <img id="krayt" src="images/creatures/krayt-dragon.jpg" alt="Krayt dragon (Star Wars): a colossal sand dragon rearing over tiny robed figures" />
 
-      <!-- specks: creatures at absurd scale -->
-      <button class="speck speck--wampa" type="button" aria-label="A speck that swells into a Wampa"><img class="cut-2" src="img/creatures/wampa.jpg" alt=""></button>
-      <button class="speck speck--ent" type="button" aria-label="A speck that swells into Treebeard"><img src="img/creatures/ent.png" alt=""></button>
-      <button class="speck speck--raptor" type="button" aria-label="A speck that swells into a Velociraptor"><img src="img/creatures/raptor.png" alt=""></button>
-      <button class="speck speck--ungoliant" type="button" aria-label="A speck that swells into Ungoliant"><img class="cut-8" src="img/creatures/ungoliant.jpg" alt=""></button>
-      <button class="speck speck--ravinak" type="button" aria-label="A speck that swells into a Ravinak"><img class="cut-5" src="img/creatures/ravinak.jpg" alt=""></button>
-      <button class="speck speck--sando" type="button" aria-label="A speck that swells into a Sando aqua monster"><img src="img/creatures/sando.png" alt=""></button>
-    </div>
+                <!-- TEMP: the ice patch will go to frozen.html once that page is built -->
+                <a class="tex" id="iceTex" href="index.html" target="_self"><img src="images/textures/ice.jpg" alt="A patch of ice" /></a>
 
-    <!-- GIF + still, top left -->
-    <button class="motion" type="button" aria-label="The Watcher in the Water, still and moving">
-      <img class="motion__still" src="img/gifs/watcher-still.jpg" alt="The Watcher in the Water (Tolkien): a mass of tentacles rising from a dark lake">
-      <img class="motion__gif" src="img/gifs/watcher-writhe.gif" alt="">
-    </button>
+                <!-- TEMP: the bark patch will go to forest.html once that page is built -->
+                <a class="tex" id="barkTex" href="water.html" target="_self"><img src="images/textures/bark.jpg" alt="A patch of bark" /></a>
 
-    <!-- STICKY, top right -->
-    <div class="rail">
-      <button class="sticky" type="button" aria-label="A Tauntaun and its rider, pinned in place"><img src="img/creatures/tauntaun.jpg" alt="Tauntaun (Star Wars): a frosted snow-lizard carrying a rider"></button>
-    </div>
+                <!-- hatched paper: a link to an outside encyclopedia -->
+                <a class="tex" id="pageTex" href="https://en.wikipedia.org/wiki/Sandworm_(Dune)" target="_blank" rel="noopener" aria-label="Encyclopedia: Sandworm, from Dune (opens in a new tab)"><span class="engraving"></span></a>
 
-    <!-- RELATIVE / CREATURE -->
-    <div class="caravan"><img src="img/creatures/lematya.png" alt="Le-matya (Star Trek): a green and yellow desert predator, drawn in pencil crayon"></div>
+                <!-- the spare texture: a second light switch -->
+                <label class="tex" id="sandTex" for="night"><img src="images/textures/sand.jpg" alt="A patch of sand that changes the light" /></label>
+            </div>
 
-  </main>
-</body>
+            <!-- top left: a still of the dragon's mouth. Hover it and the GIF underneath comes alive. -->
+            <div id="watch">
+                <img id="eyeStill" src="images/gifs/krayt-eye.jpg" alt="Close-up of the Krayt dragon's mouth and teeth" />
+                <img id="eyeGif" src="images/gifs/krayt-shimmer.gif" alt="" />
+            </div>
+
+            <!-- STICKY: the sun stays in the sky while the sand scrolls. It is a label for the hidden checkbox. -->
+            <div id="rail">
+                <label id="sun" for="night" aria-label="The sun: click to change the light"></label>
+            </div>
+
+            <!-- RELATIVE: tiny next to the dragon. Hover it and it swells. -->
+            <img id="leMatya" src="images/creatures/le-matya.png" alt="Le-matya (Star Trek): a green and yellow desert predator, drawn in pencil crayon, tiny beside the dragon" />
+        </main>
+
+        <div id="grain"></div>
+    </body>
 </html>

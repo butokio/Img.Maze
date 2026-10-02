@@ -1,59 +1,55 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Img.Maze</title>
-  <meta name="description" content="Img.Maze — a cross-canon bestiary maze. In-progress prototype.">
-  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/style.css">
-  <script src="js/main.js" defer></script>
-</head>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Img.Maze</title>
+        <link href="stylesheets/mystyles.css" rel="stylesheet" type="text/css"/>
+        <link rel="icon" href="images/favicon.svg" type="image/svg+xml" />
+    </head>
 
-<!-- LANDING · z-index cluster / chaos
-     A dense pile with no focal point and no menu. Two of the masses are doors (Reaper → Water, Krayt → Desert).
-     Interactions: hover lifts a piece to the front · drag any piece · press any letter to shuffle the pile ·
-     the two doors twitch if you leave them alone · click a door to go through. -->
-<body class="page-landing" data-page="landing">
-  <main class="pile" id="pile">
+    <!-- LANDING PAGE: z-index cluster.
+         A dense pile with no menu and no focal point. Every picture is used once.
+         Two of them are doors: the Reaper Leviathan goes to Water, the Krayt dragon goes to Desert.
+         Hover any piece and it jumps to the front. The pieces are in order, back to front. -->
+    <body id="landing">
+        <main id="pile">
 
-    <!-- backing paper + surface scraps (lowest layers) -->
-    <div class="piece p-paper-a" aria-hidden="true"><img class="cut-1" src="img/textures/paper.jpg" alt=""></div>
-    <div class="piece p-paper-b" aria-hidden="true"><img class="cut-5" src="img/textures/paper.jpg" alt=""></div>
-    <div class="piece p-kelp"    aria-hidden="true"><img class="cut-2" src="img/textures/kelp.jpg"  alt=""></div>
-    <div class="piece p-sand"    aria-hidden="true"><img class="cut-5" src="img/textures/sand.jpg"  alt=""></div>
-    <div class="piece p-ice"     aria-hidden="true"><img class="cut-3" src="img/textures/ice.jpg"   alt=""></div>
-    <div class="piece p-bark"    aria-hidden="true"><img class="cut-6" src="img/textures/bark.jpg"  alt=""></div>
-    <div class="piece p-sand-b"  aria-hidden="true"><img class="cut-7" src="img/textures/sand.jpg"  alt=""></div>
-    <div class="piece p-ice-b"   aria-hidden="true"><img class="cut-4" src="img/textures/ice.jpg"   alt=""></div>
-    <div class="piece p-kelp-b"  aria-hidden="true"><img class="cut-8" src="img/textures/kelp.jpg"  alt=""></div>
+            <!-- BACKING PAPER (the lowest layers) -->
+            <div class="piece backing" id="paperCream" aria-hidden="true"><img class="cutA" src="images/textures/paper.jpg" alt="" /></div>
+            <div class="piece backing" id="paperKraft" aria-hidden="true"><img class="cutE" src="images/textures/kraft.jpg" alt="" /></div>
 
-    <!-- the two hidden doors -->
-    <a class="piece door p-reaper" href="water.html" data-door draggable="false" aria-label="Water">
-      <img class="cut-1" src="img/creatures/reaper.jpg" alt="Reaper Leviathan (Subnautica): a pale-eyed deep-sea predator with long grasping arms">
-    </a>
-    <a class="piece door p-krayt" href="desert.html" data-door draggable="false" aria-label="Desert">
-      <img class="cut-4" src="img/creatures/krayt.jpg" alt="Krayt dragon (Star Wars): a colossal sand dragon rearing over tiny robed figures">
-    </a>
+            <!-- TEXTURE SCRAPS: one for each environment -->
+            <div class="piece" id="kelpScrap" aria-hidden="true"><img class="cutB" src="images/textures/kelp.jpg" alt="" /></div>
+            <div class="piece" id="sandScrap" aria-hidden="true"><img class="cutE" src="images/textures/sand.jpg" alt="" /></div>
+            <div class="piece" id="iceScrap" aria-hidden="true"><img class="cutC" src="images/textures/ice.jpg" alt="" /></div>
+            <div class="piece" id="barkScrap" aria-hidden="true"><img class="cutF" src="images/textures/bark.jpg" alt="" /></div>
 
-    <!-- everyone else: canons that never meet, sharing a pile -->
-    <div class="piece p-flicker"><img class="cut-3" src="img/gifs/flicker.gif" alt="A rapid flicker through every creature in the maze"></div>
-    <div class="piece p-watcher"><img class="cut-7" src="img/creatures/watcher.jpg" alt="The Watcher in the Water (Tolkien): a mass of tentacles rising from a dark lake"></div>
-    <div class="piece p-tauntaun"><img class="cut-6" src="img/creatures/tauntaun.jpg" alt="Tauntaun (Star Wars): a frosted snow-lizard carrying a rider"></div>
-    <div class="piece p-sando"><img src="img/creatures/sando.png" alt="Sando aqua monster (Star Wars): a vast whale-like swamp creature, drawn as a field-guide plate"></div>
-    <div class="piece p-ravinak"><img class="cut-5" src="img/creatures/ravinak.jpg" alt="Ravinak (Star Trek): an armoured ice predator surfacing from shadow"></div>
-    <div class="piece p-wampa"><img class="cut-2" src="img/creatures/wampa.jpg" alt="Wampa (Star Wars): a white snow-beast in an ice cave"></div>
-    <div class="piece p-lematya"><img src="img/creatures/lematya.png" alt="Le-matya (Star Trek): a green and yellow desert predator, drawn in pencil crayon"></div>
-    <div class="piece p-ungoliant"><img class="cut-8" src="img/creatures/ungoliant.jpg" alt="Ungoliant (Tolkien): a giant spider beneath the Two Trees"></div>
-    <div class="piece p-ent"><img src="img/creatures/ent.png" alt="Treebeard, an Ent (Tolkien), shown on a trading card"></div>
-    <div class="piece p-raptor"><img src="img/creatures/raptor.png" alt="Velociraptor: a feathered pack-hunter with a blue crest"></div>
+            <!-- CREATURES: all eleven, each one once -->
+            <div class="piece" id="ravinak"><img class="cutE" src="images/creatures/ravinak.jpg" alt="Ravinak (Star Trek): an armoured ice predator surfacing from shadow" /></div>
+            <div class="piece" id="sando"><img src="images/creatures/sando-aqua-monster.png" alt="Sando aqua monster (Star Wars): a vast whale-like swamp creature, drawn as a field-guide plate" /></div>
+            <div class="piece" id="watcher"><img class="cutG" src="images/gifs/watcher-writhe.gif" alt="The Watcher in the Water (Tolkien): a mass of tentacles rising from a dark lake, rippling" /></div>
+            <div class="piece" id="tauntaun"><img class="cutF" src="images/creatures/tauntaun.jpg" alt="Tauntaun (Star Wars): a frosted snow-lizard carrying a rider" /></div>
 
-    <!-- type-as-texture: cut-up lettering, decorative only -->
-    <div class="piece p-type-a" aria-hidden="true"><span class="scrap"><b>Im</b></span></div>
-    <div class="piece p-type-b" aria-hidden="true"><span class="scrap scrap--cream"><b>g.</b></span></div>
-    <div class="piece p-type-c" aria-hidden="true"><span class="scrap"><b>Ma</b></span></div>
-    <div class="piece p-type-d" aria-hidden="true"><span class="scrap scrap--cream"><b>ze</b></span></div>
+            <!-- DOOR TO DESERT -->
+            <a class="piece door" id="kraytDoor" href="desert.html" target="_self"><img class="cutD" src="images/creatures/krayt-dragon.jpg" alt="Krayt dragon (Star Wars): a colossal sand dragon rearing over tiny robed figures" /></a>
 
-  </main>
-</body>
+            <!-- DOOR TO WATER -->
+            <a class="piece door" id="reaperDoor" href="water.html" target="_self"><img class="cutA" src="images/creatures/reaper-leviathan.jpg" alt="Reaper Leviathan (Subnautica): a pale-eyed deep-sea predator with long grasping arms" /></a>
+
+            <div class="piece" id="typeMa" aria-hidden="true"><span class="scrap">Ma</span></div>
+            <div class="piece" id="ungoliant"><img class="cutH" src="images/creatures/ungoliant.jpg" alt="Ungoliant (Tolkien): a giant spider beneath the Two Trees" /></div>
+            <div class="piece" id="typeZe" aria-hidden="true"><span class="scrap scrapCream">ze</span></div>
+            <div class="piece" id="wampa"><img class="cutB" src="images/creatures/wampa.jpg" alt="Wampa (Star Wars): a white snow-beast in an ice cave" /></div>
+            <div class="piece" id="leMatyaPiece"><img src="images/creatures/le-matya.png" alt="Le-matya (Star Trek): a green and yellow desert predator, drawn in pencil crayon" /></div>
+            <div class="piece" id="ent"><img src="images/creatures/ent-treebeard-card.png" alt="Treebeard, an Ent (Tolkien), shown on a trading card" /></div>
+            <div class="piece" id="typeG" aria-hidden="true"><span class="scrap scrapCream">g.</span></div>
+            <div class="piece" id="raptor"><img src="images/creatures/velociraptor.png" alt="Velociraptor: a feathered pack-hunter with a blue crest" /></div>
+
+            <!-- CUT-UP TYPE: lettering as a texture (Im / g. / Ma / ze), on top of everything -->
+            <div class="piece" id="typeIm" aria-hidden="true"><span class="scrap">Im</span></div>
+
+        </main>
+        <div id="grain"></div>
+    </body>
 </html>

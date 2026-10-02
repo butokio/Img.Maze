@@ -2,20 +2,20 @@
 """
 Generates the paper-cut forest planes for forest.html as SVG (no dependencies, seeded => reproducible).
 
-  img/foliage/src/back.svg         far plane   - pale, hazy trunks
-  img/foliage/src/mid.svg          mid plane   - rigid dark trunks with gaps the creatures peek through
-  img/foliage/src/front-left.svg   front plane - foliage curtain that peels away to the left
-  img/foliage/src/front-right.svg  front plane - foliage curtain that peels away to the right
-  img/foliage/src/undergrowth.svg  fern / grass strip along the floor
+  images/foliage/src/back.svg         far plane   - pale, hazy trunks
+  images/foliage/src/mid.svg          mid plane   - rigid dark trunks with gaps the creatures peek through
+  images/foliage/src/front-left.svg   front plane - foliage curtain that peels away to the left
+  images/foliage/src/front-right.svg  front plane - foliage curtain that peels away to the right
+  images/foliage/src/undergrowth.svg  fern / grass strip along the floor
 
 Run:  python3 tools/build-foliage.py   then   node tools/rasterize-foliage.cjs   (PNGs are what the page uses;
-the SVGs in img/foliage/src/ are the editable originals - open them in Illustrator / Figma)
+the SVGs in images/foliage/src/ are the editable originals - open them in Illustrator / Figma)
 """
 import math
 import os
 import random
 
-OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'img', 'foliage', 'src')
+OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'images', 'foliage', 'src')
 os.makedirs(OUT, exist_ok=True)
 
 
