@@ -58,6 +58,7 @@ stylesheets/mystyles.css     the only stylesheet, one section per page
 images/creatures/            the 11 creatures + the corrupted patch
 images/gifs/                 le-matya-swim.gif, watcher-writhe.gif, krayt-shimmer.gif + krayt-eye.jpg (its still)
 images/textures/             paper, kraft, sand, ice, bark, kelp, caustics, grain  (generated)
+learn/                       a small lab: the three ideas behind the pages, plus an exercise (not part of the site or the submission)
 tools/                       scripts that rebuild the images, build the ZIP and run the checks (not part of the site)
 ```
 

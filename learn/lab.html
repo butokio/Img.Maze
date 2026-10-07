@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Img.Maze lab</title>
+        <link href="lab.css" rel="stylesheet" type="text/css"/>
+    </head>
+
+    <body>
+        <header>
+            <h1>The three ideas behind Img.Maze</h1>
+            <p>Everything on the Landing, Water and Desert pages is one of these three ideas, repeated with more pictures.
+               Open <b>lab.css</b> next to this page. Change a number, save, refresh, and watch what moves.</p>
+        </header>
+
+        <!-- STAGE 1 -->
+        <section id="stage1">
+            <h2>1. Stacking: who is in front</h2>
+            <p>Hover a square. <span class="hint">Landing page: every piece is placed with position:absolute and stacked with z-index.</span></p>
+            <div id="pile">
+                <div class="square" id="redSquare">1</div>
+                <div class="square" id="greenSquare">2</div>
+                <div class="square" id="blueSquare">3</div>
+            </div>
+
+            <p>One number scales everything. <span class="hint">Landing page: the pile's font-size, with every piece sized in em.</span></p>
+            <div id="pile2">
+                <div class="dot" id="dotA"></div>
+                <div class="dot" id="dotB"></div>
+                <div class="dot" id="dotC"></div>
+            </div>
+        </section>
+
+        <!-- STAGE 2 -->
+        <section id="stage2">
+            <h2>2. Hover one thing, change another</h2>
+            <p>Point at the blue square, then move away. <span class="hint">Water page: the corrupted patch reveals the hidden creature.</span></p>
+            <div id="water">
+                <div id="lens"></div>
+                <div id="creature">hidden creature</div>
+            </div>
+        </section>
+
+        <!-- STAGE 3 -->
+        <section id="stage3">
+            <h2>3. Click one thing, change another (and start an animation)</h2>
+            <p>Click the sun. Click it again. <span class="hint">Desert page: the sun is a label for a hidden checkbox.</span></p>
+            <input type="checkbox" id="night" aria-label="Day or night" />
+            <div id="desert">
+                <label for="night" id="sun" aria-label="The sun: click to change the light"></label>
+                <div id="comet"></div>
+            </div>
+        </section>
+
+        <!-- STAGE 4 -->
+        <section id="stage4">
+            <h2>4. Your turn</h2>
+            <p>Click GO. Nothing happens yet. Write the CSS (at the bottom of lab.css) that makes it work.</p>
+            <input type="checkbox" id="go" aria-label="Go" />
+            <div id="track">
+                <label for="go" id="goButton">GO</label>
+                <div id="walker"></div>
+            </div>
+        </section>
+    </body>
+</html>

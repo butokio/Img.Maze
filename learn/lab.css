@@ -1,0 +1,285 @@
+/* LAB: the three ideas behind Img.Maze, each as small as I could make it.
+   Open this file next to lab.html. Change a number, save, refresh, and watch what moves.
+   Each stage says which part of the real site it comes from. */
+
+
+/*BASE*/
+
+body {
+    font-family:"Gill Sans", "Helvetica", "Arial", sans-serif;
+    color:#555;
+    background-color:#F6F4DB;
+    margin:0;
+    padding:1em 1em 4em 1em;
+}
+
+header, section {
+    max-width:640px;
+    margin:1.5em auto;
+    padding:1.25em;
+    background-color:#FFF;
+    box-shadow:0 0 14px #888;
+}
+
+h1, h2 {
+    margin-top:0;
+    color:darkmagenta;
+}
+
+.hint {
+    font-size:0.85em;
+    font-style:italic;
+}
+
+
+/*STAGE 1: STACKING   (real site: index.html, #pile and the .piece rules in mystyles.css)*/
+
+/* position:relative makes #pile the "page" that the squares are placed on. */
+#pile {
+    position:relative;
+    height:220px;
+    background-color:#EEE;
+}
+
+/* position:absolute lifts a square out of the normal flow, so left and top can put it anywhere inside #pile.
+   z-index decides who is in front: the higher number is nearer the front. */
+.square {
+    position:absolute;
+    width:120px;
+    height:120px;
+    color:#FFF;
+    font-size:3em;
+    line-height:120px;
+    text-align:center;
+    transition:transform 0.4s;
+}
+
+#redSquare {
+    left:20px;
+    top:20px;
+    background-color:crimson;
+    z-index:+1;
+}
+
+#greenSquare {
+    left:80px;
+    top:50px;
+    background-color:seagreen;
+    z-index:+2;
+}
+
+#blueSquare {
+    left:140px;
+    top:30px;
+    background-color:steelblue;
+    z-index:+3;
+}
+
+/* HOVER: the same z-index property, with a bigger number, only while the mouse is over the square.
+   TRY IT: delete "#stage1 " (with the space) from the next line, save, refresh. Hovering stops bringing squares forward. Why?
+   Rules have strengths. An id selector (#redSquare) is stronger than a class selector with a hover (.square:hover),
+   so even while you hover, the id's "z-index:+1" still wins. Putting #stage1 in front makes this rule stronger than
+   the id rules again. That is why the real stylesheet says "#pile .piece:hover" and not just ".piece:hover". */
+#stage1 .square:hover {
+    z-index:+100;
+    transform:scale(1.15);
+}
+
+
+/*STAGE 1b: ONE NUMBER SCALES EVERYTHING   (real site: #pile { font-size:1vmax } and every width in em)*/
+
+/* 1em means "the font-size of this element". If the container sets a font-size and the pieces are sized in em,
+   changing that ONE number resizes all of them together, including the container's own height.
+   TRY IT: change 8px to 14px. The real pile uses 1vmax (1% of the screen's longer edge), so it scales with the window. */
+#pile2 {
+    position:relative;
+    height:20em;
+    font-size:8px;
+    background-color:#EEE;
+}
+
+.dot {
+    position:absolute;
+    border-radius:50%;
+}
+
+#dotA {
+    left:2em;
+    top:2em;
+    width:12em;
+    height:12em;
+    background-color:crimson;
+}
+
+#dotB {
+    left:10em;
+    top:6em;
+    width:9em;
+    height:9em;
+    background-color:seagreen;
+}
+
+#dotC {
+    left:17em;
+    top:3em;
+    width:15em;
+    height:15em;
+    background-color:steelblue;
+}
+
+
+/*STAGE 2: HOVER ONE THING, CHANGE ANOTHER   (real site: water.html, #lens reveals #anchor)*/
+
+#water {
+    position:relative;
+    height:160px;
+    background-color:#0F4F7F;
+}
+
+#lens {
+    position:absolute;
+    left:20px;
+    top:20px;
+    width:100px;
+    height:100px;
+    background-color:#46B4CC;
+    cursor:pointer;
+}
+
+/* Hidden: nearly see-through and blurry. The "1s" at the end of the transition is a delay,
+   so the creature sinks back slowly after you move away. */
+#creature {
+    position:absolute;
+    left:160px;
+    top:20px;
+    width:200px;
+    height:100px;
+    color:#333;
+    line-height:100px;
+    text-align:center;
+    background-color:#FFD166;
+    opacity:0.15;
+    filter:blur(6px);
+    transition:all 1.5s ease 1s;
+}
+
+/* ~ means "a sibling that comes LATER in the HTML". Read the rule aloud: "when #lens is hovered, restyle the #creature after it".
+   TRY IT: in lab.html move the #creature line ABOVE the #lens line and refresh. The reveal stops working,
+   because ~ only looks forward. */
+#lens:hover ~ #creature {
+    opacity:1;
+    filter:none;
+    transition:all 0.4s;
+}
+
+
+/*STAGE 3: CLICK ONE THING, CHANGE ANOTHER   (real site: desert.html, the sun and the hidden #night box)*/
+
+/* The box that remembers "day" or "night". It sits off the left edge of the screen: invisible to the eye, but the
+   keyboard can still reach it. (display:none would hide it from the keyboard too.)
+   It must come BEFORE the things it changes in the HTML, for the same reason as stage 2. */
+#night {
+    position:absolute;
+    left:-9999px;
+}
+
+#desert {
+    position:relative;
+    height:180px;
+    overflow:hidden;
+    background-color:#F6D79A;
+    transition:background-color 1s;
+}
+
+#sun {
+    position:absolute;
+    left:20px;
+    top:20px;
+    width:70px;
+    height:70px;
+    border-radius:50%;
+    background-color:#FFD54A;
+    cursor:pointer;
+    transition:background-color 1s;
+}
+
+/* A <label for="night"> is a button for the checkbox whose id is "night": clicking it ticks the box.
+   :checked means "the box is ticked". And ~ again: everything after #night in the HTML can now react to it.
+   No JavaScript: the browser itself ticks and unticks the box. */
+#night:checked ~ #desert {
+    background-color:#2B2E51;
+}
+
+#night:checked ~ #desert #sun {
+    background-color:#E8EEFF;
+}
+
+/* AN ANIMATION STARTED BY A CLICK. @keyframes gives an animation a name and lists how things look along the way.
+   The animation property plays it: name, how long, easing, delay, how many times, and "forwards" = stay where it ends.
+   Nothing happens until the box is ticked, because that is the only time this rule applies.
+   Untick the box and the rule stops applying, so the comet goes back to its start. */
+#comet {
+    position:absolute;
+    left:-60px;
+    top:120px;
+    width:50px;
+    height:6px;
+    border-radius:3px;
+    background-color:#FFF;
+    opacity:0;
+}
+
+#night:checked ~ #desert #comet {
+    animation:fly 2s ease-in 0.5s 1 forwards;
+}
+
+@keyframes fly {
+    0%   { left:-60px; opacity:1; }
+    100% { left:110%; opacity:1; }
+}
+
+
+/*STAGE 4: YOUR TURN
+  Goal: clicking GO makes the blue square slide from the left end of the track to the right end.
+  The HTML is finished. Only the CSS at the very bottom is missing. Everything you need is in stage 3.
+  Write your answer under the line. Save, refresh, click GO. */
+
+#go {
+    position:absolute;
+    left:-9999px;
+}
+
+#track {
+    position:relative;
+    height:90px;
+    overflow:hidden;
+    background-color:#EEE;
+}
+
+#goButton {
+    position:absolute;
+    left:10px;
+    top:10px;
+    padding:0.5em 1em;
+    color:#FFF;
+    background-color:darkmagenta;
+    cursor:pointer;
+}
+
+#walker {
+    position:absolute;
+    left:10px;
+    top:50px;
+    width:30px;
+    height:30px;
+    background-color:steelblue;
+}
+
+/* TODO 1: write an @keyframes called walk. At 0% the walker is at left:10px. At 100% it is at left:540px.
+   TODO 2: write a rule that plays it when the box (#go) is ticked. Copy how stage 3 does it for #comet, and change the names.
+   TODO 3: make the walker stay at the right end instead of jumping back. (It is one word on the animation line.)
+   TODO 4 (bonus): click GO a second time. What happens, and why? Can you make it slide back instead of jumping back? */
+
+
+/* ---------- YOUR CSS GOES BELOW THIS LINE ---------- */
+
