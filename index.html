@@ -11,8 +11,13 @@
     <!-- LANDING PAGE: z-index cluster.
          A dense pile with no menu and no focal point. Every picture is used once.
          Two of them are doors: the Reaper Leviathan goes to Water, the Krayt dragon goes to Desert.
-         Hover any piece and it jumps to the front. The pieces are in order, back to front. -->
+         Hover any piece and it jumps to the front. The pieces are in order, back to front.
+         Click any scrap of lettering and the four of them slide together to spell the name (click again and they scatter). -->
     <body id="landing">
+
+        <!-- the hidden switch for the four lettering scraps. It must come BEFORE #pile (see "THE TITLE" in mystyles.css) -->
+        <input type="checkbox" class="switch" id="spell" aria-label="Put the title together" />
+
         <main id="pile">
 
             <!-- BACKING PAPER (the lowest layers) -->
@@ -37,17 +42,17 @@
             <!-- DOOR TO WATER -->
             <a class="piece door" id="reaperDoor" href="water.html" target="_self"><img class="cutA" src="images/creatures/reaper-leviathan.jpg" alt="Reaper Leviathan (Subnautica): a pale-eyed deep-sea predator with long grasping arms" /></a>
 
-            <div class="piece" id="typeMa" aria-hidden="true"><span class="scrap">Ma</span></div>
+            <label class="piece letter" id="typeMa" for="spell" aria-hidden="true"><span class="scrap">Ma</span></label>
             <div class="piece" id="ungoliant"><img class="cutH" src="images/creatures/ungoliant.jpg" alt="Ungoliant (Tolkien): a giant spider beneath the Two Trees" /></div>
-            <div class="piece" id="typeZe" aria-hidden="true"><span class="scrap scrapCream">ze</span></div>
+            <label class="piece letter" id="typeZe" for="spell" aria-hidden="true"><span class="scrap scrapCream">ze</span></label>
             <div class="piece" id="wampa"><img class="cutB" src="images/creatures/wampa.jpg" alt="Wampa (Star Wars): a white snow-beast in an ice cave" /></div>
             <div class="piece" id="leMatyaPiece"><img src="images/creatures/le-matya.png" alt="Le-matya (Star Trek): a green and yellow desert predator, drawn in pencil crayon" /></div>
             <div class="piece" id="ent"><img src="images/creatures/ent-treebeard-card.png" alt="Treebeard, an Ent (Tolkien), shown on a trading card" /></div>
-            <div class="piece" id="typeG" aria-hidden="true"><span class="scrap scrapCream">g.</span></div>
+            <label class="piece letter" id="typeG" for="spell" aria-hidden="true"><span class="scrap scrapCream">g.</span></label>
             <div class="piece" id="raptor"><img src="images/creatures/velociraptor.png" alt="Velociraptor: a feathered pack-hunter with a blue crest" /></div>
 
             <!-- CUT-UP TYPE: lettering as a texture (Im / g. / Ma / ze), on top of everything -->
-            <div class="piece" id="typeIm" aria-hidden="true"><span class="scrap">Im</span></div>
+            <label class="piece letter" id="typeIm" for="spell" aria-hidden="true"><span class="scrap">Im</span></label>
 
         </main>
         <div id="grain"></div>

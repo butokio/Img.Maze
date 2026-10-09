@@ -10,13 +10,13 @@
 
     <!-- DESERT PAGE: absolute + scale.
          One vast image (the Krayt dragon, far wider than the window) and a few very small things.
-         The sun is a button: click it and the desert goes to night (click again for day). The patch of sand does the same.
+         The sun is a button: click it and the desert goes to night and the Le-matya prowls across the dunes (click again for day). The patch of sand does the same.
          Hover the tiny Le-matya and it swells. Hover the still in the top left and it plays.
-         Three textures are links: the ice and the bark (TEMP, see below) and the hatched paper (an outside encyclopedia). -->
+         Three textures are links: the ice (to the start), the bark (to the forest) and the hatched paper (an outside encyclopedia). -->
     <body id="desert">
 
         <!-- the hidden day / night switch. It must come BEFORE everything it changes (see "THE LIGHT SWITCH" in mystyles.css) -->
-        <input type="checkbox" id="night" aria-label="Day or night" />
+        <input type="checkbox" class="switch" id="night" aria-label="Day or night" />
         <div id="sky"></div>
         <div id="skyNight"></div>
 
@@ -28,11 +28,11 @@
             <div id="colossus">
                 <img id="krayt" src="images/creatures/krayt-dragon.jpg" alt="Krayt dragon (Star Wars): a colossal sand dragon rearing over tiny robed figures" />
 
-                <!-- TEMP: the ice patch will go to frozen.html once that page is built -->
+                <!-- the ice patch: a snow place pasted onto the sand. A link back to the start -->
                 <a class="tex" id="iceTex" href="index.html" target="_self"><img src="images/textures/ice.jpg" alt="A patch of ice" /></a>
 
-                <!-- TEMP: the bark patch will go to forest.html once that page is built -->
-                <a class="tex" id="barkTex" href="water.html" target="_self"><img src="images/textures/bark.jpg" alt="A patch of bark" /></a>
+                <!-- the bark patch: a link to the forest -->
+                <a class="tex" id="barkTex" href="forest.html" target="_self"><img src="images/textures/bark.jpg" alt="A patch of bark" /></a>
 
                 <!-- hatched paper: a link to an outside encyclopedia -->
                 <a class="tex" id="pageTex" href="https://en.wikipedia.org/wiki/Sandworm_(Dune)" target="_blank" rel="noopener" aria-label="Encyclopedia: Sandworm, from Dune (opens in a new tab)"><span class="engraving"></span></a>

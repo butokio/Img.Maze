@@ -15,7 +15,7 @@ import zipfile
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 FOLDER = 'Img.Maze'
-PAGES = ['index.html', 'water.html', 'desert.html']
+PAGES = ['index.html', 'water.html', 'desert.html', 'forest.html']
 CSS = 'stylesheets/mystyles.css'
 OUT = os.path.abspath(sys.argv[1]) if len(sys.argv) > 1 else os.path.join(ROOT, '..', 'Img.Maze-prototype.zip')
 

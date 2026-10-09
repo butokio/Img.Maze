@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Img.Maze - forest</title>
+        <link href="stylesheets/mystyles.css" rel="stylesheet" type="text/css"/>
+        <link rel="icon" href="images/favicon.svg" type="image/svg+xml" />
+    </head>
+
+    <!-- FOREST PAGE: z-index depth + relative, as a storybook that unfolds from left to right.
+         Three scenes sit side by side in one wide strip. Swipe, drag the scroll bar or use the arrow keys to move along it,
+         or click the fern at the end of a scene to turn the page.
+         Every scene is built in layers (far trees, creatures, trunks, grass, leaves) and z-index decides which is in front.
+         Click the leaves in the middle scene and they part (click again and they close). Click the raptor and it bolts.
+         Links: the Ent card (outside encyclopedia), the Watcher (to Water) and the Tauntaun (back to the start). -->
+    <body id="forest">
+
+        <!-- the two hidden switches. They must come BEFORE everything they change (see "THE SWITCHES" in mystyles.css) -->
+        <input type="checkbox" class="switch" id="peel" aria-label="Part the leaves" />
+        <input type="checkbox" class="switch" id="dash" aria-label="Startle the raptor" />
+
+        <main id="book" tabindex="0" aria-label="The forest: a picture story that scrolls sideways">
+            <div id="strip">
+
+                <!-- LAYERS THAT RUN BEHIND ALL THREE SCENES -->
+                <img id="far" src="images/foliage/far.png" alt="" aria-hidden="true" />
+                <div id="shade" aria-hidden="true"></div>
+                <img id="grass" src="images/foliage/undergrowth.png" alt="" aria-hidden="true" />
+
+                <!-- SCENE 1: a clearing in the mist. The Ent leans out from behind a trunk (hover it; it is also a link to an encyclopedia). -->
+                <section class="scene" id="scene1">
+                    <img class="trunk near" id="trunk1" src="images/foliage/trunk-1.png" alt="" aria-hidden="true" />
+                    <img class="trunk" id="trunk2" src="images/foliage/trunk-2.png" alt="" aria-hidden="true" />
+                    <img class="trunk" id="trunk3" src="images/foliage/trunk-3.png" alt="" aria-hidden="true" />
+
+                    <a class="pasted" id="entCard" href="https://en.wikipedia.org/wiki/Ent" target="_blank" rel="noopener"><img src="images/creatures/ent-treebeard-card.png" alt="Treebeard, an Ent (Tolkien), on a trading card, leaning out from behind a tree: a link to an encyclopedia entry (opens in a new tab)" /></a>
+
+                    <img class="clump" id="clump1" src="images/foliage/corner-1.png" alt="" aria-hidden="true" />
+                    <a class="leaf" id="leaf1" href="#scene2" aria-label="Next: deeper into the forest"><img src="images/foliage/leaf-1.png" alt="" /></a>
+                </section>
+
+                <!-- SCENE 2: under the two trees. The big picture is hidden behind leaves. Click anywhere on it and they part. -->
+                <section class="scene" id="scene2">
+                    <label class="pasted" id="twoTrees" for="peel"><img class="cutH" src="images/creatures/ungoliant.jpg" alt="Ungoliant (Tolkien): a giant spider beneath the Two Trees, facing a dark armoured figure" /></label>
+
+                    <img class="trunk" id="trunk4" src="images/foliage/trunk-4.png" alt="" aria-hidden="true" />
+                    <img class="trunk" id="trunk5" src="images/foliage/trunk-5.png" alt="" aria-hidden="true" />
+
+                    <label class="curtain" id="curtainL" for="peel"><img src="images/foliage/front-left.png" alt="" aria-hidden="true" /></label>
+                    <label class="curtain" id="curtainR" for="peel"><img src="images/foliage/front-right.png" alt="" aria-hidden="true" /></label>
+
+                    <a class="leaf" id="leaf2" href="#scene3" aria-label="Next: out of the trees"><img src="images/foliage/leaf-2.png" alt="" /></a>
+                </section>
+
+                <!-- SCENE 3: dusk in the undergrowth. The raptor hides in the ferns (click it). Two creatures from other places are doors. -->
+                <section class="scene" id="scene3">
+                    <img class="trunk" id="trunk6" src="images/foliage/trunk-6.png" alt="" aria-hidden="true" />
+                    <img class="trunk" id="trunk7" src="images/foliage/trunk-7.png" alt="" aria-hidden="true" />
+                    <img class="trunk" id="trunk8" src="images/foliage/trunk-8.png" alt="" aria-hidden="true" />
+                    <img class="trunk near" id="trunk9" src="images/foliage/trunk-9.png" alt="" aria-hidden="true" />
+
+                    <!-- DOOR TO THE START: a snow creature, lost among the trunks -->
+                    <a class="pasted exit" id="tauntaunDoor" href="index.html" target="_self"><img class="cutF" src="images/creatures/tauntaun.jpg" alt="Tauntaun (Star Wars): a frosted snow-lizard carrying a rider, lost among the trees" /></a>
+
+                    <!-- DOOR TO WATER: a lake creature, lurking in the roots -->
+                    <a class="pasted exit" id="watcherDoor" href="water.html" target="_self"><img class="cutG" src="images/gifs/watcher-writhe.gif" alt="The Watcher in the Water (Tolkien): a mass of tentacles rising from a dark lake, far from any lake" /></a>
+
+                    <!-- the raptor is a label for the hidden checkbox "dash" -->
+                    <label id="fernRaptor" for="dash"><img src="images/creatures/velociraptor.png" alt="Velociraptor: a feathered pack-hunter with a blue crest, crouched in the ferns" /></label>
+
+                    <img class="clump" id="clump2" src="images/foliage/corner-2.png" alt="" aria-hidden="true" />
+                </section>
+
+            </div>
+        </main>
+
+        <div id="grain"></div>
+    </body>
+</html>

@@ -1,6 +1,6 @@
 /*
- * Rasterises images/foliage/src/*.svg to transparent PNGs at 1.25x so the forest "peel" can scale them
- * on the GPU instead of re-drawing ~1000 vector paths every scroll frame.
+ * Rasterises tools/foliage-src/*.svg to transparent PNGs in images/foliage/ at 1.25x, so they stay sharp on a big screen
+ * and the browser does not have to draw ~1000 vector paths every time it repaints.
  *   node tools/rasterize-foliage.cjs        (needs `npm i playwright` and ImageMagick)
  */
 const { chromium } = require('playwright');
@@ -8,11 +8,12 @@ const { execFileSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
-const SRC = path.resolve(__dirname, '../images/foliage/src');
+const SRC = path.resolve(__dirname, 'foliage-src');
 const OUT = path.resolve(__dirname, '../images/foliage');
 const DSF = 1.25;
 
 (async () => {
+  fs.mkdirSync(OUT, { recursive: true });
   const browser = await chromium.launch();
   for (const file of fs.readdirSync(SRC).filter((f) => f.endsWith('.svg'))) {
     const svg = fs.readFileSync(path.join(SRC, file), 'utf8');

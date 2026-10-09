@@ -1,22 +1,30 @@
 #!/usr/bin/env python3
 """
-Generates the paper-cut forest planes for forest.html as SVG (no dependencies, seeded => reproducible).
+Generates the paper-cut forest pieces for forest.html as SVG (no dependencies, seeded => reproducible).
 
-  images/foliage/src/back.svg         far plane   - pale, hazy trunks
-  images/foliage/src/mid.svg          mid plane   - rigid dark trunks with gaps the creatures peek through
-  images/foliage/src/front-left.svg   front plane - foliage curtain that peels away to the left
-  images/foliage/src/front-right.svg  front plane - foliage curtain that peels away to the right
-  images/foliage/src/undergrowth.svg  fern / grass strip along the floor
+  tools/foliage-src/far.svg           4800x900  far plane: pale, hazy trunks behind all three scenes
+  tools/foliage-src/trunk-1..9.svg    one dark trunk each (the mid plane), so every trunk can be moved on its own
+  tools/foliage-src/front-left.svg    foliage curtain on the left of scene 2 (peels away to the left)
+  tools/foliage-src/front-right.svg   foliage curtain on the right of scene 2 (peels away to the right)
+  tools/foliage-src/corner-1.svg      foliage clump for the corner of scene 1
+  tools/foliage-src/corner-2.svg      foliage clump for the corner of scene 3
+  tools/foliage-src/undergrowth.svg   4800x330  fern and grass strip along the floor of all three scenes
+  tools/foliage-src/leaf-1.svg        a fern frond: the "turn the page" link at the end of scene 1
+  tools/foliage-src/leaf-2.svg        ... and the one at the end of scene 2
 
-Run:  python3 tools/build-foliage.py   then   node tools/rasterize-foliage.cjs   (PNGs are what the page uses;
-the SVGs in images/foliage/src/ are the editable originals - open them in Illustrator / Figma)
+Run:  python3 tools/build-foliage.py   then   node tools/rasterize-foliage.cjs
+(the PNGs in images/foliage/ are what the page uses; the SVGs in tools/foliage-src/ are the editable originals,
+ open them in Illustrator / Figma)
 """
 import math
 import os
 import random
+import re
 
-OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'images', 'foliage', 'src')
+OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'foliage-src')
 os.makedirs(OUT, exist_ok=True)
+
+STRIP_W = 4800  # three scenes of 1600 wide
 
 
 # ------------------------------------------------------------------ primitives
@@ -88,11 +96,12 @@ def write(name, content):
 
 
 # ------------------------------------------------------------------ far plane
-def build_back():
+def build_far():
     rng = random.Random(21)
+    W, H = STRIP_W, 900
     out = []
     x = -30
-    while x < 1640:
+    while x < W + 40:
         w = rng.uniform(16, 46)
         d, left, right = trunk_polygon(rng, x, w, -20, 930, lean=rng.uniform(-0.012, 0.012), jitter=1.6)
         shade = rng.choice(['#7e9d78', '#86a47e', '#73926f', '#8fab84'])
@@ -105,29 +114,28 @@ def build_back():
     defs = ('<defs><linearGradient id="fog" x1="0" y1="0" x2="0" y2="1">'
             '<stop offset="0.35" stop-color="#cfe2bf" stop-opacity="0"/>'
             '<stop offset="1" stop-color="#c3d9b0" stop-opacity="0.85"/></linearGradient></defs>')
-    out.append('<rect width="1600" height="900" fill="url(#fog)"/>')
-    write('back.svg', svg(1600, 900, ''.join(out), defs))
+    out.append(f'<rect width="{W}" height="{H}" fill="url(#fog)"/>')
+    write('far.svg', svg(W, H, ''.join(out), defs))
 
 
-# ------------------------------------------------------------------ mid plane
-def build_mid():
+# ------------------------------------------------------------------ mid plane: one trunk per file
+def build_trunks(count=9):
     rng = random.Random(5)
-    # centre x, width, flare at the foot - chosen to leave readable gaps for the creatures
-    spec = [(95, 170, 1.5), (390, 118, 1.25), (640, 92, 1.0), (1070, 126, 1.35), (1352, 104, 1.1), (1560, 150, 1.45)]
     palette = ['#35523a', '#2d4a33', '#3b5b3f', '#2a4430']
-    out = []
-    for i, (cx, w, flare) in enumerate(spec):
+    for i in range(count):
+        width = rng.uniform(95, 175)
+        flare = rng.uniform(1.0, 1.5)
+        W, H = int(width * flare) + 70, 960
+        cx = W / 2
         col = palette[i % len(palette)]
-        d, left, right = trunk_polygon(rng, cx, w, -30, 940, lean=rng.uniform(-0.015, 0.015), jitter=3.5, flare=flare)
-        # cut-paper shadow, then the trunk
-        out.append(f'<path d="{d}" fill="#0b1a10" opacity="0.28" transform="translate(7 9)"/>')
-        out.append(f'<path d="{d}" fill="{col}"/>')
+        d, left, right = trunk_polygon(rng, cx, width, -30, 940, lean=rng.uniform(-0.015, 0.015), jitter=3.5, flare=flare)
+        out = [f'<path d="{d}" fill="{col}"/>']
         # lit side
-        hl = 'M' + ' L'.join(f'{f(a + w * 0.08)},{f(b)}' for a, b in left) + ' ' + \
-             ' '.join(f'L{f(a + w * 0.3)},{f(b)}' for a, b in left[::-1]) + 'Z'
+        hl = 'M' + ' L'.join(f'{f(a + width * 0.08)},{f(b)}' for a, b in left) + ' ' + \
+             ' '.join(f'L{f(a + width * 0.3)},{f(b)}' for a, b in left[::-1]) + 'Z'
         out.append(f'<path d="{hl}" fill="#5c8560" opacity="0.5"/>')
         # bark furrows
-        for _ in range(int(w / 14) + 2):
+        for _ in range(int(width / 14) + 2):
             u = rng.uniform(0.12, 0.88)
             y0 = rng.uniform(0, 600)
             seg = []
@@ -137,18 +145,10 @@ def build_mid():
                 seg.append((a[0] + (b[0] - a[0]) * u + rng.uniform(-3, 3), yy))
             out.append('<path d="M' + ' L'.join(f'{f(a)},{f(b)}' for a, b in seg) +
                        '" stroke="#1b3022" stroke-width="2.4" fill="none" opacity="0.55" stroke-linecap="round"/>')
-        # a short broken branch
-        if i % 2 == 0:
-            by = rng.uniform(180, 420)
-            side = 1 if rng.random() > 0.5 else -1
-            bx = cx + side * w * 0.45
-            out.append(f'<path d="{leaf_path(bx, by, math.radians(-30 if side > 0 else -150), 150, 9)}" fill="{col}"/>')
-    # ground
-    out.append('<path d="M0,872 Q380,845 800,868 T1600,860 L1600,900 L0,900Z" fill="#1d3524"/>')
-    write('mid.svg', svg(1600, 900, ''.join(out)))
+        write(f'trunk-{i + 1}.svg', svg(W, H, ''.join(out)))
 
 
-# ------------------------------------------------------------------ front curtains
+# ------------------------------------------------------------------ foliage clumps and curtains
 def curtain(name, seed, mirror):
     rng = random.Random(seed)
     W, H = 1000, 900
@@ -195,24 +195,103 @@ def curtain(name, seed, mirror):
     write(name, svg(W, H, ''.join(out)))
 
 
+def clump(name, seed, mirror):
+    """A tuft of ferns and broad leaves growing up from the bottom corner of a scene. Nothing is cut off except at the bottom
+    and on the outer side, so the top of the picture is all natural leaf tips."""
+    rng = random.Random(seed)
+    W, H = 900, 760
+    palette = ['#10261a', '#143020', '#193a26', '#102a1c']
+    hl = '#2f5f39'
+
+    def mx(x):
+        return W - x if mirror else x
+
+    def mang(a):
+        return math.pi - a if mirror else a
+
+    origins = [  # (x, y, angle range in degrees (negative = up), count, length range)
+        (-40, H + 40, (-82, -20), 7, (420, 700)),
+        (60, H + 60, (-120, -55), 6, (360, 620)),
+        (-60, H - 220, (-60, 10), 4, (300, 520)),
+        (170, H + 50, (-140, -95), 3, (300, 500)),
+    ]
+    shadow, body, all_d = [], [], []
+    for ox, oy, (a0, a1), count, (l0, l1) in origins:
+        for _ in range(count):
+            ang = math.radians(rng.uniform(a0, a1))
+            curl = rng.uniform(-0.0016, 0.0016)
+            leaves, rachis = frond(rng, mx(ox), oy, mang(ang), rng.uniform(l0, l1), -curl if mirror else curl, rng.uniform(95, 150))
+            col = rng.choice(palette)
+            all_d += leaves + [rachis]
+            shadow.append(''.join(f'<path d="{d}"/>' for d in leaves))
+            body.append(f'<g fill="{col}" stroke="{col}" stroke-width="1">' + ''.join(f'<path d="{d}"/>' for d in leaves) + '</g>')
+            body.append(f'<path d="{rachis}" fill="none" stroke="{hl}" stroke-width="3" opacity="0.5" stroke-linecap="round"/>')
+    for _ in range(6):  # a few broad leaves for a different silhouette
+        ox = rng.uniform(-20, 260)
+        ang = math.radians(rng.uniform(-115, -35))
+        d = broad_leaf(rng, mx(ox), H + 20, mang(ang), rng.uniform(260, 430))
+        all_d.append(d)
+        shadow.append(f'<path d="{d}"/>')
+        col = rng.choice(palette)
+        body.append(f'<path d="{d}" fill="{col}"/>')
+        body.append(f'<path d="{d}" fill="none" stroke="{hl}" stroke-width="2.4" opacity="0.35"/>')
+    # crop the picture to the tuft: flush with the bottom and the outer side, snug at the top and the inner side
+    nums = [float(v) for d in all_d for v in re.findall(r'-?\d+\.?\d*', d)]
+    xs, ys = nums[0::2], nums[1::2]
+    pad = 16
+    y0 = min(ys) - pad
+    x0 = 0 if not mirror else min(xs) - pad
+    cw = int((max(xs) + pad) if not mirror else (W - x0))
+    ch = int(H - y0)
+    out = [f'<g transform="translate({f(-x0)} {f(-y0)})">'
+           '<g fill="#04100a" opacity="0.3" transform="translate(6 9)">' + ''.join(shadow) + '</g>'] + body + ['</g>']
+    write(name, svg(cw, ch, ''.join(out)))
+
+
+# ------------------------------------------------------------------ the "turn the page" leaves
+def build_leaf(name, seed, tilt, curl, length=760):
+    """One big fern frond (a link, so it is a little lighter than the curtains). The picture is cropped to the frond
+    itself, so nothing is cut off; the root of the frond is at the top of the picture."""
+    rng = random.Random(seed)
+    palette = ['#1d4a2b', '#25562f', '#2a5c33', '#1f4f2c']
+    leaves, rachis = frond(rng, 0, 0, math.radians(tilt), length, curl, 140, n=30)
+    nums = [float(v) for d in leaves + [rachis] for v in re.findall(r'-?\d+\.?\d*', d)]
+    xs, ys = nums[0::2], nums[1::2]
+    pad = 24
+    minx, miny = min(xs) - pad, min(ys) - pad
+    W, H = int(max(xs) - minx + pad + 8), int(max(ys) - miny + pad + 10)  # extra room on the right/bottom for the shadow
+    col = rng.choice(palette)
+    shape = ''.join(f'<path d="{d}"/>' for d in leaves)
+    body = (f'<g transform="translate({f(-minx)} {f(-miny)})">'
+            f'<g fill="#04100a" opacity="0.28" transform="translate(6 9)">{shape}</g>'
+            f'<g fill="{col}" stroke="{col}" stroke-width="1">{shape}</g>'
+            f'<path d="{rachis}" fill="none" stroke="#4f8a55" stroke-width="4" opacity="0.6" stroke-linecap="round"/></g>')
+    write(name, svg(W, H, body))
+
+
 # ------------------------------------------------------------------ floor
 def build_undergrowth():
     rng = random.Random(77)
+    W, H = STRIP_W, 330
     out = []
     greens = ['#1f4a2a', '#2a5c33', '#356b3b', '#26502e', '#3d7a42']
-    for layer, (count, lo, hi) in enumerate([(70, 90, 210), (80, 120, 260), (56, 150, 330)]):
+    for layer, (count, lo, hi) in enumerate([(210, 90, 210), (240, 120, 260), (168, 150, 330)]):
         for _ in range(count):
-            x = rng.uniform(-20, 1620)
+            x = rng.uniform(-20, W + 20)
             ang = math.radians(-90 + rng.uniform(-38, 38))
             out.append(f'<path d="{leaf_path(x, 320, ang, rng.uniform(lo, hi), rng.uniform(6, 13), bend=rng.uniform(-0.14, 0.14))}" '
                        f'fill="{greens[(layer * 2 + rng.randint(0, 2)) % len(greens)]}"/>')
-    out.append('<rect x="0" y="300" width="1600" height="30" fill="#14301c"/>')
-    write('undergrowth.svg', svg(1600, 330, ''.join(out)).replace('xMidYMax slice', 'xMidYMax meet'))
+    out.append(f'<rect x="0" y="300" width="{W}" height="30" fill="#14301c"/>')
+    write('undergrowth.svg', svg(W, H, ''.join(out)).replace('xMidYMax slice', 'xMidYMax meet'))
 
 
 if __name__ == '__main__':
-    build_back()
-    build_mid()
+    build_far()
+    build_trunks()
     curtain('front-left.svg', 301, mirror=False)
     curtain('front-right.svg', 302, mirror=True)
+    clump('corner-1.svg', 303, mirror=False)
+    clump('corner-2.svg', 304, mirror=True)
+    build_leaf('leaf-1.svg', 401, tilt=112, curl=-0.0006)
+    build_leaf('leaf-2.svg', 402, tilt=70, curl=0.0006)
     build_undergrowth()

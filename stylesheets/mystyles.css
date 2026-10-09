@@ -1,6 +1,6 @@
 /* IMG.MAZE - mystyles.css
-   One stylesheet for all three pages (index.html, water.html, desert.html), set up like the Week 2 demo.
-   Each page's <body> has its own id (landing, water, desert), so a rule can be limited to one page.
+   One stylesheet for all four pages (index.html, water.html, desert.html, forest.html), set up like the Week 2 demo.
+   Each page's <body> has its own id (landing, water, desert, forest), so a rule can be limited to one page.
 
    CONTENTS
    BASE
@@ -8,6 +8,7 @@
    LANDING PAGE    z-index cluster
    WATER PAGE      fixed + sticky
    DESERT PAGE     absolute + scale
+   FOREST PAGE     z-index depth + relative, a storybook that scrolls sideways
    SMALL SCREENS
 */
 
@@ -22,6 +23,13 @@ body {
 
 img {
     display:block;
+}
+
+/* A hidden checkbox that works as a switch: a <label for="..."> is its button, and CSS reads the tick with :checked.
+   Off the screen (not display:none) so the keyboard can still reach it. Used on every page. */
+.switch {
+    position:absolute;
+    left:-9999px;
 }
 
 /* The paper grain over every page. Same idea as #fernborder in the demo: a fixed div with a background image.
@@ -125,6 +133,7 @@ img {
     background-image:radial-gradient(rgba(0,0,0,0.3) 22%, transparent 25%);
     background-size:0.85vmax 0.85vmax;
     clip-path:polygon(2% 6%, 30% 0%, 58% 4%, 98% 0%, 100% 40%, 96% 96%, 62% 100%, 28% 95%, 0% 100%, 4% 52%);
+    transition:font-size 1.2s ease-in-out;
 }
 
 .scrapCream {
@@ -304,6 +313,45 @@ img {
     z-index:+21;
 }
 
+/* THE TITLE. The four scraps of lettering are all <label>s for the hidden box #spell (see .switch in BASE).
+   Click any of them: the box ticks, and each scrap plays its own animation and keeps its last frame (forwards), sliding into a row that spells
+   the name of the site: Im g. Ma ze. The lettering shrinks as it goes (in the pile it is too big for its scrap, so only a bit of each letter shows).
+   Click again and they scatter back to the pile.
+   A @keyframes with only a "to" frame starts from wherever the piece already is, so one tiny @keyframes per scrap is all it takes.
+   The number after the time is a delay, so the four arrive one after another. */
+.letter {
+    cursor:pointer;
+}
+
+#spell:checked ~ #pile .scrap {
+    font-size:9vmax;
+}
+
+#spell:checked ~ #pile #typeIm {
+    z-index:+300;
+    animation:gatherIm 1.3s cubic-bezier(0.34, 1.4, 0.64, 1) forwards;
+}
+
+#spell:checked ~ #pile #typeG {
+    z-index:+300;
+    animation:gatherG 1.3s cubic-bezier(0.34, 1.4, 0.64, 1) 0.12s forwards;
+}
+
+#spell:checked ~ #pile #typeMa {
+    z-index:+300;
+    animation:gatherMa 1.3s cubic-bezier(0.34, 1.4, 0.64, 1) 0.24s forwards;
+}
+
+#spell:checked ~ #pile #typeZe {
+    z-index:+300;
+    animation:gatherZe 1.3s cubic-bezier(0.34, 1.4, 0.64, 1) 0.36s forwards;
+}
+
+@keyframes gatherIm { to { left:19%; top:35%; rotate:2deg; } }
+@keyframes gatherG { to { left:39%; top:38%; rotate:-2deg; } }
+@keyframes gatherMa { to { left:55%; top:39%; rotate:1deg; } }
+@keyframes gatherZe { to { left:68%; top:39%; rotate:-1deg; } }
+
 
 /*WATER PAGE*/
 
@@ -418,10 +466,12 @@ img {
 }
 
 /* REVEAL: ~ means "a sibling that comes later in the HTML". #lens comes before #anchorBox, so when #lens is hovered
-   (or reached with the Tab key) the #anchor inside the box after it grows back to full size and loses its blur.
+   the #anchor inside the box after it grows back to full size and loses its blur. The same happens when the hidden box #summon
+   is ticked (see below) or reached with the Tab key (:focus-visible is "focused with the keyboard", so a mouse click does not count).
    The slow return is the delay in the rule above. */
 #lens:hover ~ #anchorBox #anchor,
-#lens:focus ~ #anchorBox #anchor {
+#summon:focus-visible ~ #reef #anchorBox #anchor,
+#summon:checked ~ #reef #anchorBox #anchor {
     opacity:1;
     scale:1;
     filter:none;
@@ -430,8 +480,33 @@ img {
 }
 
 #lens:hover img,
-#lens:focus img {
+#summon:focus-visible ~ #reef #lens img,
+#summon:checked ~ #reef #lens img {
     opacity:0.28;
+}
+
+/* THE SUMMONING. #lens is a <label> for the hidden box #summon (see .switch in BASE), so clicking the patch ticks the box.
+   Two other things then play at once, neither of them the thing you clicked: the creature lunges at you, and the whole reef shudders.
+   Click again to let it sink back. */
+#summon:checked ~ #reef #anchor {
+    animation:lunge 1.8s ease-out forwards;
+}
+
+#summon:checked ~ #reef #lair {
+    animation:tremor 0.9s ease-in-out;
+}
+
+@keyframes lunge {
+    35% { scale:1.45; }
+    100% { scale:1.12; }
+}
+
+@keyframes tremor {
+    0%, 100% { translate:0 0; }
+    15% { translate:-0.7vw 0.5vh; }
+    35% { translate:0.6vw -0.6vh; }
+    55% { translate:-0.5vw 0.4vh; }
+    75% { translate:0.3vw -0.3vh; }
 }
 
 /* Ripples where something large is moving. */
@@ -579,13 +654,9 @@ img {
     background-color:#d9b06c;
 }
 
-/* THE LIGHT SWITCH. #night is a checkbox that stays hidden. Clicking the sun (or the patch of sand) ticks it.
+/* THE LIGHT SWITCH. #night is a checkbox that stays hidden (see .switch in BASE). Clicking the sun (or the patch of sand) ticks it.
    CSS can see a ticked box with :checked, and ~ reaches everything that comes after it in the HTML,
    so one tick can restyle the whole page. No JavaScript. */
-#night {
-    position:absolute;
-    left:-9999px;
-}
 
 #sky, #skyNight {
     position:absolute;
@@ -878,6 +949,362 @@ img {
     scale:3.6;
 }
 
+/* PROWL: the same tick that turns the desert to night sends the Le-matya across the dunes. A creature that hunts after dark.
+   The animation moves it with left (it is position:relative) and bobs it with top so it walks rather than slides. */
+#night:checked ~ #dunes #leMatya {
+    animation:prowl 12s ease-in-out forwards;
+}
+
+@keyframes prowl {
+    0% { left:11vw; top:86vh; }
+    12% { top:85vh; }
+    25% { top:86.4vh; }
+    37% { top:85vh; }
+    50% { top:86.4vh; }
+    62% { top:85vh; }
+    75% { top:86.4vh; }
+    87% { top:85vh; }
+    100% { left:78vw; top:86vh; }
+}
+
+
+/*FOREST PAGE*/
+
+/* THE BOOK. position:fixed pins this box to the window, so the page itself never scrolls. The box scrolls instead,
+   and only sideways (overflow-x:auto). scroll-snap makes it stop neatly on each scene, and scroll-behavior:smooth
+   makes the "turn the page" ferns glide instead of jump. */
+#forest {
+    background-color:#1d3524;
+}
+
+#book {
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    overflow-x:auto;
+    overflow-y:hidden;
+    scroll-snap-type:x mandatory;
+    scroll-behavior:smooth;
+}
+
+#book:focus {
+    outline:none;
+}
+
+/* THE STRIP: one long row, three windows wide. display:flex lays the three scenes side by side. */
+#strip {
+    position:relative;
+    display:flex;
+    width:300vw;
+    height:100%;
+    background-image:linear-gradient(#e4f0d8, #c3d9b0);
+}
+
+/* A SCENE is one window wide. position:relative makes it the box everything inside is measured from, so every left / top / width
+   below is a percentage of the SCENE, not of the whole strip. overflow:hidden trims whatever slides out of it. */
+.scene {
+    position:relative;
+    flex:0 0 100vw;
+    height:100%;
+    overflow:hidden;
+    scroll-snap-align:start;
+}
+
+/* The seam between two scenes, like the fold of a page. */
+.scene::after {
+    content:"";
+    position:absolute;
+    top:0;
+    right:0;
+    width:1.6vw;
+    height:100%;
+    z-index:+9;
+    pointer-events:none;
+    background-image:linear-gradient(90deg, rgba(0,0,0,0), rgba(0,0,0,0.32));
+}
+
+/* THE DEPTH, from the back to the front (this is the z-index of each layer):
+   1 far trees   2 a wash of colour   3 creatures behind the trunks   4 trunks   5 creatures in front of the trunks
+   6 grass   7 the nearest trunks, leaves and tufts   8 ferns you click to turn the page   9 the page seam   9000 the grain (in BASE) */
+
+/* LAYERS BEHIND ALL THREE SCENES. They are as wide as the strip, so one picture runs through all three scenes.
+   pointer-events:none lets the mouse go straight through them. */
+#far, #shade, #grass {
+    position:absolute;
+    left:0;
+    width:100%;
+    pointer-events:none;
+}
+
+#far {
+    top:0;
+    height:100%;
+    object-fit:cover;
+    object-position:left top;
+    z-index:+1;
+}
+
+/* Mist in the first scene, deeper and darker in the second, dusk with a low glow in the third.
+   Change the numbers here to change the mood. */
+#shade {
+    top:0;
+    height:100%;
+    z-index:+2;
+    background-image:
+        radial-gradient(ellipse 45vw 70vh at 92% 8%, rgba(255,176,96,0.6), rgba(255,176,96,0) 100%),
+        linear-gradient(90deg, rgba(8,24,14,0) 0%, rgba(8,24,14,0) 26%, rgba(8,24,14,0.55) 50%, rgba(8,24,14,0.6) 72%, rgba(20,14,30,0.6) 100%);
+}
+
+#grass {
+    bottom:0;
+    height:auto;
+    z-index:+6;
+}
+
+/* TRUNKS: one picture each, so every trunk can be moved on its own. They are taller than the window (112%)
+   so the tops and the roots are cut off. left is a percentage of the scene. */
+.trunk {
+    position:absolute;
+    top:-6%;
+    height:112%;
+    width:auto;
+    z-index:+4;
+    pointer-events:none;
+    filter:drop-shadow(0 0 1.4vw rgba(6,18,10,0.5));
+}
+
+/* .near trunks are in front of everything (z-index 7) and darkened, so the scene looks as if you are standing among the trees */
+.near {
+    z-index:+7;
+    filter:brightness(0.55) drop-shadow(0 0 1.8vw rgba(0,0,0,0.5));
+}
+
+#trunk1 { left:-4%; top:-12%; height:124%; }
+#trunk2 { left:31%; }
+#trunk3 { left:68%; height:104%; top:-2%; }
+#trunk4 { left:3%; }
+#trunk5 { left:80%; top:-10%; height:120%; }
+#trunk6 { left:-2%; top:-10%; height:120%; }
+#trunk7 { left:28%; }
+#trunk8 { left:56%; height:104%; top:-2%; }
+#trunk9 { left:90%; }
+
+/* PASTED PICTURES: creatures glued into the scene, the same idea as the pieces on the Landing. */
+.pasted {
+    position:absolute;
+    z-index:+3;
+    cursor:pointer;
+    filter:drop-shadow(0 0.45vw 0.8vw rgba(24,14,6,0.45));
+    transition:rotate 0.5s, scale 0.4s, translate 0.5s, filter 0.4s;
+}
+
+.pasted img {
+    width:100%;
+    height:auto;
+}
+
+.pasted:hover {
+    rotate:0deg;
+    scale:1.04;
+    filter:drop-shadow(0 0.9vw 1.6vw rgba(24,14,6,0.55));
+}
+
+/* SCENE 1. The Ent card is tucked behind a trunk (z-index 3 is behind the trunks at 4). Point at it and it leans out. */
+#entCard {
+    left:38.5%;
+    top:34%;
+    width:13%;
+    rotate:-5deg;
+}
+
+#entCard:hover {
+    translate:3vw -1vh;
+}
+
+/* TUFTS of leaves in the bottom corners, in front of everything (z-index 7). The mouse goes straight through them. */
+.clump {
+    position:absolute;
+    z-index:+7;
+    pointer-events:none;
+}
+
+#clump1 {
+    left:0;
+    bottom:-3%;
+    width:27%;
+}
+
+/* SCENE 2. The big picture sits behind the trunks and, until you click, behind the leaves as well. */
+#twoTrees {
+    left:20%;
+    top:24%;
+    width:60%;
+    rotate:-1.5deg;
+    transition:rotate 0.5s, scale 0.4s, filter 2.4s;
+}
+
+/* when the leaves part, the light of the two trees spills into the forest (a second change from the same click) */
+#peel:checked ~ #book #twoTrees {
+    filter:drop-shadow(0 0 3.5vw rgba(255,214,120,0.85));
+}
+
+/* THE SWITCHES. #peel and #dash are hidden checkboxes (see .switch in BASE). A <label for="peel"> is a button for the box with that id:
+   click the label and the box ticks. CSS can see a ticked box with :checked, and ~ reaches everything that comes after it in the HTML,
+   so one tick can restyle the whole page. Same trick as the sun on the Desert page.
+
+   THE LEAVES in front of the big picture are labels for "peel". Ticking it plays the animation below once and keeps its last frame (forwards).
+   @keyframes lists the poses; the name after "animation:" picks which list to play. */
+.curtain {
+    position:absolute;
+    top:-6%;
+    width:80%;
+    height:112%;
+    z-index:+7;
+    cursor:pointer;
+}
+
+/* object-fit:cover makes the picture fill its box whatever the shape of the window (a little is cropped); object-position says which side stays put */
+.curtain img {
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+#curtainL {
+    left:-4%;
+}
+
+#curtainL img {
+    object-position:left center;
+}
+
+#curtainR {
+    left:24%;
+}
+
+#curtainR img {
+    object-position:right center;
+}
+
+#peel:checked ~ #book #curtainL {
+    animation:partsLeft 2.4s ease-in-out forwards;
+}
+
+#peel:checked ~ #book #curtainR {
+    animation:partsRight 2.4s ease-in-out forwards;
+}
+
+@keyframes partsLeft {
+    0% { translate:0 0; rotate:0deg; }
+    20% { translate:1% 0.5%; rotate:1deg; }
+    100% { translate:-112% -3%; rotate:-8deg; }
+}
+
+@keyframes partsRight {
+    0% { translate:0 0; rotate:0deg; }
+    20% { translate:-1% 0.5%; rotate:-1deg; }
+    100% { translate:112% -3%; rotate:8deg; }
+}
+
+/* SCENE 3. The raptor hides in the ferns: z-index 5 is in front of the trunks but behind the grass at 6. */
+#fernRaptor {
+    position:absolute;
+    left:12%;
+    top:62%;
+    width:15%;
+    z-index:+5;
+    cursor:pointer;
+    filter:drop-shadow(0 0.4vw 0.7vw rgba(6,18,10,0.5));
+}
+
+/* the picture faces left; scale:-1 1 flips it so it faces the way it will run */
+#fernRaptor img {
+    width:100%;
+    height:auto;
+    scale:-1 1;
+}
+
+/* Ticking "dash" brings the raptor in front of the grass (z-index 8) and sends it across the scene. */
+#dash:checked ~ #book #fernRaptor {
+    z-index:+8;
+    animation:dash 2.2s ease-in-out forwards;
+}
+
+@keyframes dash {
+    0% { translate:0 0; }
+    12% { translate:-1.5vw 1.5vh; }
+    60% { translate:34vw -5vh; }
+    100% { translate:60vw 0; }
+}
+
+/* The two doors are pasted pictures like the Ent: a snow creature lost among the trees (back to the start) and a lake creature in the roots (to Water). */
+#tauntaunDoor {
+    left:70%;
+    top:10%;
+    width:24%;
+    rotate:4deg;
+}
+
+#watcherDoor {
+    left:47%;
+    top:56%;
+    width:20%;
+    rotate:-3deg;
+    z-index:+5;
+}
+
+#clump2 {
+    right:0;
+    bottom:-3%;
+    width:32%;
+}
+
+/* THE FERNS AT THE END OF A SCENE: click one to turn the page (an ordinary link to #scene2, #scene3: the id of the next scene).
+   They sway a little all the time. That, and the hand cursor, are the only clues. */
+.leaf {
+    position:absolute;
+    top:-5%;
+    width:11%;
+    z-index:+8;
+    transform-origin:50% 0%;
+    animation:sway 4.5s ease-in-out infinite alternate;
+    filter:drop-shadow(0 0.4vw 0.7vw rgba(0,0,0,0.4));
+    transition:scale 0.4s;
+}
+
+.leaf img {
+    width:100%;
+    height:auto;
+}
+
+.leaf:hover {
+    scale:1.07;
+    animation-play-state:paused;
+}
+
+#leaf1 {
+    left:86%;
+}
+
+#leaf2 {
+    left:85%;
+}
+
+@keyframes sway {
+    from { rotate:-2.5deg; }
+    to { rotate:2.5deg; }
+}
+
+/* Keyboard: a white ring round whatever you have reached with Tab. */
+.pasted:focus-visible, .leaf:focus-visible,
+#peel:focus-visible ~ #book #twoTrees,
+#dash:focus-visible ~ #book #fernRaptor {
+    outline:3px solid #fff;
+    outline-offset:4px;
+}
+
 
 /*SMALL SCREENS*/
 
@@ -896,12 +1323,23 @@ img {
     #sun { width:26vw; height:26vw; }
     #pageTex { left:62%; }
     #leMatya { width:18vw; top:80vh; }
+    #strip { width:534vh; }
+    .scene { flex-basis:178vh; }
+    #book { scroll-snap-type:x proximity; }
 }
 
-/* People who ask their computer for less movement get none of the wiggling, drifting or fading. */
+/* People who ask their computer for less movement get none of the wiggling, drifting, swaying or fading. Every animation is cut to a
+   blink instead of being switched off, so a click still ends where it should (the title spelled, the leaves parted, the Le-matya across the dunes). */
 @media (prefers-reduced-motion:reduce) {
     * {
-        animation:none !important;
-        transition:none !important;
+        animation-duration:0.01ms !important;
+        animation-delay:0s !important;
+        animation-iteration-count:1 !important;
+        transition-duration:0.01ms !important;
+        transition-delay:0s !important;
+    }
+
+    #ripples {
+        display:none;
     }
 }
